@@ -1,1 +1,8 @@
 
+/* .app { */
+    /* background-color: gray; */
+    
+/* } */
+html{
+    scroll-behavior: smooth;
+}
