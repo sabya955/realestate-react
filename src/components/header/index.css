@@ -1,21 +1,27 @@
-/* index.css */
-
+/* General Reset */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
+/* Header and Navigation */
 header {
     background-color: #f8f9fa;
     border-bottom: 1px solid #ddd;
     height: 3rem;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
 }
 
 .nav {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 10px 20px;
+    padding: 10px;
 }
 
 .nav h1 {
@@ -26,6 +32,8 @@ header {
 
 .link {
     display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 15px;
 }
 
@@ -40,8 +48,23 @@ header {
     color: #0056b3;
 }
 
+.signup-loginBtn {
+    padding: 5px;
+    font-size: 1rem;
+    background-color: #6c63ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.signup-loginBtn:hover {
+    background-color: #5846d6;
+}
+
+/* Dropdown Menu */
 .logo {
-    /* Adjust size for logo container */
     width: 40px;
     height: 40px;
     background-color: #eee;
@@ -51,14 +74,13 @@ header {
     justify-content: center;
     font-size: 12px;
     color: #666;
+    display: none;
 }
-.dropDown{
-    /* display: none; */
-    /* visibility: hidden; */
-    /* opacity: 0;  */
+
+.dropDown {
     display: flex;
     position: absolute;
-    top: 60px;
+    top: 50px;
     right: 2rem;
     width: 300px;
     flex-direction: column;
@@ -66,9 +88,128 @@ header {
     align-items: center;
     gap: 10px;
     font-size: 20px;
-    /* height: 0;  */
     background-color: rgba(204, 186, 153, 0.6);
     border-radius: 20px;
     backdrop-filter: blur(15px);
     transition: all 0.3s ease-in-out;
+    z-index: 999;
+}
+
+.dropDown button {
+    cursor: pointer;
+    padding: 10px;
+    border: none;
+    background-color: transparent;
+    color: #007bff;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.dropDown button:hover {
+    color: #0056b3;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.modal h2 {
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+}
+
+.modal label {
+    display: block;
+    margin: 10px 0;
+}
+
+.modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.modal button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.modal button[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+}
+
+.modal button[type="button"] {
+    background-color: #007bff;
+    color: white;
+}
+
+.toggle-button {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: underline;
+}
+
+.toggle-button:hover {
+    color: #0056b3;
+}
+
+.close-modal {
+    background-color: #f44336;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+input{
+    color: black;
+}
+/* Responsiveness */
+@media (max-width: 768px) {
+    header {
+        height: 60px;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 20px;
+        color: #666;
+    }
+
+    .link {
+        display: none;
+    }
 }

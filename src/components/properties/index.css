@@ -1,0 +1,86 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+.main{
+    width: 100%;
+    display: grid;
+    grid-template-rows: 20% 1fr;
+}
+.head{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: gray;
+}
+.head h1{
+    font-size: 50px;
+}
+.head p{
+    font-size: 20px;
+    color: #6c63ff;
+    
+}
+.properties{
+    display: grid;
+    grid-template-columns: repeat(4,23%);
+    justify-content: center;
+    align-content: center;
+    gap: 20px;
+    cursor: pointer;
+}
+@media screen and (max-width: 1024px) {
+    .head h1 {
+        font-size: 40px;
+    }
+
+    .head p {
+        font-size: 18px;
+    }
+
+    .properties {
+        grid-template-columns: repeat(3, 30%);
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .main {
+        grid-template-rows: auto 1fr;
+    }
+
+    .head h1 {
+        font-size: 35px;
+    }
+
+    .head p {
+        font-size: 16px;
+    }
+
+    .properties {
+        grid-template-columns: repeat(2, 45%);
+        gap: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .head h1 {
+        font-size: 28px;
+    }
+
+    .head p {
+        font-size: 14px;
+    }
+
+    .properties {
+        grid-template-columns: repeat(1, 90%);
+        gap: 10px;
+    }
+}
