@@ -7,6 +7,7 @@
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 },
                 body: JSON.stringify(body),
             }).then((response) => response.json());
@@ -17,6 +18,7 @@
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localStorage.getItem("token")}`,
                 }
             })
             .then((response) => response.json())

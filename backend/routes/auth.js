@@ -2,13 +2,9 @@ const express = require('express');
 const router= express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const {authPool}= require('./db');
+const {productPool}= require('./db');
 require('dotenv').config();
 const JWT_SECRET = process.env.JWT_SECRET;
-
-
-
-
 router.post('/signup',async (req,res)=>{
     const {fullName,email,password,confirmPassword} = req.body;
     if (!fullName || !email || !password || !confirmPassword) {
@@ -20,13 +16,13 @@ router.post('/signup',async (req,res)=>{
     const hashedPassword = await bcrypt.hash(password, 10);
    
     try{
-        const existingUser  = await authPool.query('SELECT * FROM listauthor WHERE email =$1',[email]);
+        const existingUser  = await productPool.query('SELECT * FROM users WHERE email =$1',[email]);
         if(existingUser.rows.length>0){
             return res.status(400).json({message: 'User already exists'});
         }
         try {
-            var result = await authPool.query(
-                'INSERT INTO listauthor  (full_name, email, password) VALUES ($1, $2, $3) RETURNING id',
+            var result = await productPool.query(
+                'INSERT INTO users  (full_name, email, password) VALUES ($1, $2, $3) RETURNING id',
                 [fullName, email, hashedPassword]
                 
             );
@@ -45,7 +41,7 @@ router.post('/signup',async (req,res)=>{
 router.post('/login',async (req,res)=>{
     const {email,password} = req.body;
     try{
-        const result = await authPool.query('SELECT * FROM listauthor WHERE email = $1',[email]);
+        const result = await productPool.query('SELECT * FROM users WHERE email = $1',[email]);
         if (result.rows.length === 0){
             return res.status(401).json({message: 'Invalid credentials'});
         }
