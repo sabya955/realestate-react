@@ -10,7 +10,7 @@ const Properties = () => {
       .get("api/Products")
       .then((response) => {
         console.log("Fetch products successfully", response);
-        setProducts(response);
+        setProducts(response.products || []);
       })
       .catch((Error) => console.log("Fetch produt failed", Error));
   },[]);

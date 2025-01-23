@@ -18,6 +18,7 @@ const HomePage = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting,setIsSubmitting] = useState(false)
   const [successMessage,setSuccessMessage] = useState('')
+  const [errorMessage,setErrorMessage] = useState('')
   const validateForm =()=>{
     const { email, phone } = formData;
     let isInvalid = false;
@@ -57,6 +58,12 @@ const HomePage = () => {
     }
     setIsSubmitting(true); 
    console.log("came to create user callback");
+   const token = localStorage.getItem('token');
+   if(!token){
+    setIsSubmitting(false)
+    setErrorMessage("please login to send message")
+    return;
+   }
    apis
    .post("api/users/", formData)
     .then((data) => {
@@ -69,13 +76,15 @@ const HomePage = () => {
           phone: "",
           message: "",
         })
+     
         console.log(data);
         })
         .catch((error) => {
           setIsSubmitting(false);
-          setSuccessMessage("Failed to send your message. Please try again.");
+          setErrors("Failed to send your message. Please login.");
           console.log(error);
         });
+
       
   };
 
@@ -129,8 +138,10 @@ const HomePage = () => {
             onChange={handleChange}
           ></textarea>
           <button onClick={createUser} disabled={isSubmitting}>{isSubmitting ? "send...":"send"}</button>
+          {errorMessage && <p>{errorMessage}</p>}
         </form>
         {successMessage && <p>{successMessage}</p>}
+
       </div>
     </div>
   );
