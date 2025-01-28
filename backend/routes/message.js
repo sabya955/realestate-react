@@ -3,24 +3,8 @@ const router = express.Router();
 const {productPool} = require('./db');
 const bodyParser = require('body-parser');
 const app = express();
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-const JWT_SECRET = process.env.JWT_SECRET;
-const verifyToken=(req,res,next)=>{
-    const authorHeader = req.headers["authorization"];
-    if(!authorHeader){
-        return res.status(401).json({message:"No token provided"});
-    }
-    const token = authorHeader.split(" ")[1];
-    jwt.verify(token,JWT_SECRET,(err,user)=>{
-        if(err){
-            return res.status(403).json({message:"Invalid token"});
-        }
-        req.user = user;
-        next();
-    })
-}
 app.use(bodyParser.json());
+const {verifyToken} = require('./util');
 router.get('/',verifyToken, async (req, res) => {
     try {
         const result = await productPool.query('SELECT * FROM message');

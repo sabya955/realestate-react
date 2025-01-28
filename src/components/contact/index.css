@@ -1,3 +1,36 @@
     /* *{
         color: black;
     } */
+     .container3{
+        display: grid;
+        grid-template-columns: 90%;
+        grid-template-rows: 70px 70px 70px 60px ;
+        justify-content: center;
+        align-items: center;
+        
+     }
+        .container3 h1{
+            font-size: 40px;
+            text-align: center;
+            color: #6c63ff;
+        }
+        .container3 h2{
+            font-size: 40px;
+            text-align: center;
+            color: gray;
+        }
+        .container3 p{
+            font-size: 20px;
+            text-align: center;
+        }
+        .container3 button{
+            height: 50px;
+            width: 300px;
+            margin: auto;  
+            font-size: 20px;   
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+            
+        }
