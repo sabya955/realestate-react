@@ -1,5 +1,7 @@
 import React, { useEffect ,useState} from "react";
 import "./home.css";
+import { Alert,Button,TextField } from "@mui/material";      
+import SendIcon from "@mui/icons-material/Send";
 import {apis} from "../../comonapi";
 
 const HomePage = () => {
@@ -19,6 +21,7 @@ const HomePage = () => {
   const [isSubmitting,setIsSubmitting] = useState(false)
   const [successMessage,setSuccessMessage] = useState('')
   const [errorMessage,setErrorMessage] = useState('')
+  const [alert,setAlert] = useState({type:"",message:""})
   const validateForm =()=>{
     const { email, phone } = formData;
     let isInvalid = false;
@@ -65,7 +68,7 @@ const HomePage = () => {
     return;
    }
    apis
-   .post("api/users/", formData)
+   .post("api/message/", formData)
     .then((data) => {
       setIsSubmitting(false)
         setSuccessMessage('Form submitted successfully!')
@@ -95,9 +98,7 @@ const HomePage = () => {
   return (
     <div className="container">
       <div className="text">
-        <div className="call">
-          <p>+1 910-626-85255</p>
-        </div>
+       
         <h1>Find Your Dream</h1>
         <h1>Home Today</h1>
         <p>
@@ -110,26 +111,27 @@ const HomePage = () => {
         <form onSubmit={createUser} >
           <h1>Need help</h1>
           <h1>message us</h1>
-          <input type="text" required placeholder="Name" name="name" value={formData.name} className="name" onChange={handleChange}/>
-          <span className="errorMesage">{errors.name}</span>
-          <input
+          <TextField  type="text" label="Name" required  name="name" value={formData.name} className="name" onChange={handleChange} error={!! errors.name}helperText={errors.name}  />
+          <TextField
             type="email"
-            placeholder="Email"
             name="email"
+            label="Email"
+            error={!!errors.email}
+            helperText={errors.email}
             className="mail"
             value={formData.email}
             onChange={handleChange}
           />
-          <span className="errorMesage">{errors.email}</span>
-          <input
+          <TextField
             type="text"
-            placeholder="Phone"
+            label="Phone"
+            error={!!errors.phone}
+            helperText={errors.phone}
             name="phone"
             className="phone"
             value={formData.phone}
             onChange={handleChange}
           />
-          <span className="errorMesage">{errors.phone}</span>
           <textarea
             placeholder="Message"
             name="message"
@@ -137,7 +139,7 @@ const HomePage = () => {
             value={formData.message}
             onChange={handleChange}
           ></textarea>
-          <button onClick={createUser} disabled={isSubmitting}>{isSubmitting ? "send...":"send"}</button>
+          <Button onClick={createUser} disabled={isSubmitting} startIcon={<SendIcon/>}>{isSubmitting ? "send...":"send"}</Button>
           {errorMessage && <p>{errorMessage}</p>}
         </form>
         {successMessage && <p>{successMessage}</p>}

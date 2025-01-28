@@ -39,7 +39,7 @@ header {
 
 .link a {
     text-decoration: none;
-    color: #007bff;
+    color: rgb(79, 79, 208);
     font-size: 16px;
     transition: color 0.3s ease;
 }
@@ -106,7 +106,8 @@ header {
 }
 
 .dropDown button:hover {
-    color: #0056b3;
+    background-color: #0056b3;
+    
 }
 
 /* Modal Styles */
@@ -143,12 +144,11 @@ header {
 }
 
 .modal input {
-    width: 100%;
+    /* width: 100%;
     padding: 8px;
     margin-top: 5px;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 4px; */
 }
 
 .modal button {
@@ -159,6 +159,16 @@ header {
     cursor: pointer;
     font-size: 1rem;
 }
+.username_display{
+    margin-bottom: 20px;
+    color: rgb(79, 79, 208);
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+
 
 .modal button[type="submit"] {
     background-color: #4caf50;
@@ -180,7 +190,8 @@ header {
 }
 
 .toggle-button:hover {
-    color: #0056b3;
+    background-color: #0056b3;
+    
 }
 
 .close-modal {
@@ -192,8 +203,16 @@ header {
     cursor: pointer;
     margin-top: 10px;
 }
-input{
-    color: black;
+.switch {
+    width: 100%;
+   display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #333;
+
+} .switchBtn{
+    height: 30px;
+    width: 80px;
 }
 /* Responsiveness */
 @media (max-width: 768px) {

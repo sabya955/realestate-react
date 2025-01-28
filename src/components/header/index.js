@@ -1,8 +1,11 @@
 import React, { useState ,useEffect} from "react";
 import "./index.css";
+import { Alert,TextField,Button } from "@mui/material";
+import CloseIcon from '@mui/icons-material/Close';
 import { apis } from "../../comonapi";
 
 const NavBar = () => {
+  const [alert, setAlert] = useState({type:"", message:""});
   const [error, setErrors] = useState({});
   const [showMenu, setShowMenu] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -20,8 +23,10 @@ const NavBar = () => {
    if(token){
     setIsLoggedIn(true)
     const storeUser = JSON.parse(localStorage.getItem('user'))
+    console.log("Store user: ", storeUser);
     setUser(storeUser)
    }
+   setAlert({type:"",message:""})
   },[])
   const handleInputChange = (e) => {
     console.log("Targets: " + e.target);
@@ -75,23 +80,27 @@ const NavBar = () => {
 
     const endpoint = isSignup ? "api/auth/signup" : "api/auth/login";
     if (isSignup && formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      setAlert({ type: "error", message: "Passwords do not match" });
       return;
     }
     apis
       .post(endpoint, formData)
       .then((data) => {
-        alert(data.message);
+        setAlert({ type: "success", message: data.message });
         if (!isSignup && data.token) {
           localStorage.setItem("token", data.token);
+          localStorage.setItem("user",JSON.stringify(data.user));
           setIsLoggedIn(true);
           setUser(data.user);
-          window.location.reload();
+          // setTimeout(()=>{
+          // window.location.reload();
+          // })
         }
         setShowModal(false);
       })
       .catch((error) => {
-        alert(error.message);
+        setAlert({ type: "error", message: error.message });
+
       });
   };
   const handleLogout = () => {
@@ -99,8 +108,16 @@ const NavBar = () => {
     localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser(null);
-    window.location.reload();
+    setAlert({type:"info", message:"you have been logged out"})
+    setTimeout(()=>{
+      window.location.reload();
+    },2000)
   };
+  const handelModelClose = ()=>{
+      setShowModal(false)
+    
+   
+  }
 
   return (
     <header>
@@ -114,16 +131,20 @@ const NavBar = () => {
           <a href="#contact">Contact</a>
           {isLoggedIn ? (
             <div className="logged-in">
-              <span>Welcome, {user?.fullName || "User"}!</span>
-              <button onClick={handleLogout}>Logout</button>
+              <span className="username_display">Welcome, {user?.fullName || "User"}!</span>
+              <Button variant="contained" color="secondary" onClick={handleLogout}>
+                Logout
+              </Button>
             </div>
           ) : (
-            <button
-              className="signup-loginBtn"
-              onClick={() => setShowModal(true)}
-            >
-              Signup/Login
-            </button>
+            <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => setShowModal(true)}
+          >
+            Signup/Login
+          </Button>
+
           )}
         </div>
         <div className="logo">
@@ -137,113 +158,155 @@ const NavBar = () => {
             <a href="#properties">Properties</a>
             <a href="#contact">Contact</a>
             
-            <button
+            <Button
+              variant="contained"
+              color="primery"
               className="signup-loginBtn"
               onClick={() => setShowModal(true)}
             >
               Signup/Login
-            </button>
+            </Button>
           </div>
         )}
       </nav>
+    
+        
+      {alert.message && (
+        <Alert
+          severity={alert.type}
+          onClose={() => {setAlert({ type: "", message: "" })
+          console.log(alert);
+          
+        }}
+          style={{ margin: "10px 0" }}
+        >
+          {alert.message}
+        </Alert>
+      )}
+      
       {showModal && (
-        <div className="modal-overlay">
-          <div className="modal">
+        
+        <div className="modal-overlay" onClick={handelModelClose}>
+          <div className="modal" style={{position:"relative"}} onClick={(e) => e.stopPropagation()}>
+          <CloseIcon
+        style={{
+          color: "#333", 
+          cursor: "pointer",
+          position: "absolute",
+          top: "10px", 
+          right: "10px", 
+          fontSize: "24px", 
+        }}
+        onClick={(e) => {
+          e.stopPropagation()
+          setShowModal(false)
+          
+        }}
+      />
+
+            
             <h2>{isSignup ? "Signup" : "Login"}</h2>
             {isSignup ? (
                <form onSubmit={handelSubmit}>
                 
-                 <label>
-                   Full Name:
-                   <input
-                     type="text"
-                     placeholder="Enter your full name"
-                     value={formData.fullName}
-                     name="fullName"
-                     onChange={handleInputChange}
-                   />
-                   <span className="errorMesage">{error.fullName}</span>
-                 </label>
-               
-               <label>
-                 Email:
-                 <input
-                   type="email"
-                   placeholder="Enter your email"
-                   name="email"
-                   value={formData.email}
-                   onChange={handleInputChange}
+               <TextField
+               type="text"
+                 label="Full Name"
+                 fullWidth
+                 margin="normal"
+                 name="fullName"
+                  value={formData.fullName}
+                  onChange={handleInputChange}
+                  error={! ! error.fullName}
+                  helperText={error.fullName}
                  />
-                 <span className="errorMesage">{error.email}</span>
-               </label>
-               <label>
-                 Password:
-                 <input
-                   type="password"
-                   placeholder="Enter your password"
-                   name="password"
-                   value={formData.password}
-                   onChange={handleInputChange}
-                 />
-                 <span className="errorMesage">{error.password}</span>
-               </label>
-                 <label>
-                   Confirm Password:
-                   <input
-                     type="password"
-                     placeholder="Confirm your password"
-                     name="confirmPassword"
-                     value={formData.confirmPassword}
-                     onChange={handleInputChange}
-                   />
-                   <span className="errorMesage">{error.confirmPassword}</span>
-                 </label>
-               <button type="submit">{isSignup ? "Signup" : "Login"}</button>
+                  <TextField
+                  type="email"
+                  label="Email"
+                  fullWidth
+                  margin="normal"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  error={! ! error.email}
+                  helperText={error.email}
+                  />
+                  <TextField 
+                  type="password"
+                  label="Password"
+                  fullWidth
+                  margin="normal"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  error={! ! error.password}
+                  helperText={error.password}
+                  />
+                  <TextField
+                  type="password"
+                  label="Confirm Password"
+                  fullWidth
+                  margin="normal"
+                  name="confirmPassword"
+                  value={formData.confirmPassword}
+                  onChange={handleInputChange}
+                  error={! ! error.confirmPassword}
+                  helperText={error.confirmPassword}
+                  />
+               <Button type="submit"
+                className="switchBtn" 
+               variant=" primary"
+                color="primary"
+                style={{marginTop:"16px"}}
+               >{isSignup ? "Signup" : "Login"}</Button>
              </form>
             ) : (
               <form onSubmit={handelSubmit}>
-                <label>
-                  Email:
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                  <span className="errorMesage">{error.email}</span>
-                </label>
-                <label>
-                  Password:
-                  <input
-                    type="password"
-                    placeholder="Enter your password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                  />
-                  <span className="errorMesage">{error.password}</span>
-                </label>
-                <button type="submit">{isSignup? "Signup" : "Login"}</button>
+                <TextField 
+                type="text"
+                label="Email"
+                fullWidth
+                margin="normal"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                error={! ! error.email}
+                helperText={error.email}
+                />
+                <TextField 
+                type="password"
+                label="Password"
+                fullWidth
+                margin="normal"
+                name="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                error={! ! error.password}
+                helperText={error.password}                
+                />
+                <Button type="submit"
+                className="switchBtn"
+                variant=" primary"
+                color="primary"
+                style={{marginTop:"16px"}}
+                >{isSignup? "Signup" : "Login"}</Button>
               </form>
             )}
            
-            <p>
+            <p className="switch">
               {isSignup ? "Already have an account?" : "Don't have an account?"}
-              <button
+              <Button
                 type="button"
-                className="toggle-button"
+                variant="primery"
+                className="switchBtn"
                 onClick={() => {
                   setIsSignup(!isSignup); 
                   setErrors({});
                 }}
               >
                 {isSignup ? "Login" : "Signup"}
-              </button>
+              </Button>
             </p>
-            <button className="close-modal" onClick={() => setShowModal(false)}>
-              Close
-            </button>
           </div>
         </div>
       )}

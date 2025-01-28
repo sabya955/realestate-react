@@ -78,7 +78,7 @@ body {
     width: 300px;
     padding: 10px 30px;
     font-size: 1rem;
-    background-color: #007bff;
+    background-color: #6c63ff;
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -118,7 +118,6 @@ body {
     width: 100%;
     padding: 10px;
     font-size: 1rem;
-    border: 1px solid #ccc;
     border-radius: 5px;
     color: black;
 }
@@ -140,7 +139,8 @@ body {
 }
 
 .message button:hover {
-    background-color: #5a52e3;
+    background-color: #0056b3;
+    
 }
 .errorMesage{
     color: red; 

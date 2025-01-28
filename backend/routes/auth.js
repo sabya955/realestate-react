@@ -22,8 +22,8 @@ router.post('/signup',async (req,res)=>{
         }
         try {
             var result = await productPool.query(
-                'INSERT INTO users  (full_name, email, password) VALUES ($1, $2, $3) RETURNING id',
-                [fullName, email, hashedPassword]
+                'INSERT INTO users  (full_name, email, password,role) VALUES ($1, $2, $3, $4) RETURNING id',
+                [fullName, email, hashedPassword,'user']
                 
             );
             const token = jwt.sign({ userId: result.rows[0].id }, JWT_SECRET, { expiresIn: '1h' });
@@ -53,8 +53,9 @@ router.post('/login',async (req,res)=>{
         const user = result.rows[0]
         return res.status(200).json({ 
             message: 'Login successful', 
-            user: { id: user.id, fullName: user.full_name, email: user.email },
-           token: token });
+            user: { id: user.id, fullName: user.full_name, email: user.email,role:user.role},
+           token: token
+         });
     }catch(err){
         console.log(err);
        return res.status(500).json({message: 'internal server error',error:err.message});
