@@ -8,7 +8,7 @@ const verifyAdmin = async (req, res, next) => {
   if (!authHeader) {
     return res.status(401).json({ messsage: "no token pass" });
   }
-  const token = authHeader.split(" ", 1);
+  const token = authHeader.split(" ")[1];
   try {
     const decode = jwt.verify(token, JWT_SECRET);
     const user = await productPool.query("SELECT *FROM users WHERE id = $1", [
@@ -40,5 +40,4 @@ const verifyToken = (req, res, next) => {
     next();
   });
 };
-module.exports = verifyToken;
-module.exports = verifyAdmin;
+module.exports = {verifyToken,verifyAdmin};
