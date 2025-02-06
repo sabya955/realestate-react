@@ -3,6 +3,7 @@ import HomePage from "../home";
 import Properties from "../properties";
 import About from "../about";
 import Contact from "../contact";
+// import Navbar from "../header"
 const LandingPage = ()=>{
   return (
       <div className="app">

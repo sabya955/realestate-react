@@ -65,6 +65,7 @@ const HomePage = () => {
    if(!token){
     setIsSubmitting(false)
     setErrorMessage("please login to send message")
+    setAlert({type:"info",message:"please login to send message"})
     return;
    }
    apis

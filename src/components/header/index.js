@@ -1,4 +1,5 @@
 import React, { useState ,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 import "./index.css";
 import { Alert,TextField,Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,6 +19,7 @@ const NavBar = () => {
   });
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [user, setUser] = useState(null)
+  // const Navigate = useNavigate();
   useEffect(()=>{
     const token = localStorage.getItem('token')
    if(token){
@@ -92,15 +94,14 @@ const NavBar = () => {
           localStorage.setItem("user",JSON.stringify(data.user));
           setIsLoggedIn(true);
           setUser(data.user);
-          // setTimeout(()=>{
-          // window.location.reload();
-          // })
+          setTimeout(()=>{
+          window.location.reload();
+          },2000)
         }
         setShowModal(false);
       })
       .catch((error) => {
         setAlert({ type: "error", message: error.message });
-
       });
   };
   const handleLogout = () => {
@@ -109,29 +110,41 @@ const NavBar = () => {
     setIsLoggedIn(false);
     setUser(null);
     setAlert({type:"info", message:"you have been logged out"})
+    // Navigate("/landingPage",{replace:true})
     setTimeout(()=>{
       window.location.reload();
     },2000)
   };
   const handelModelClose = ()=>{
       setShowModal(false)
-    
-   
+  } 
+  const handelPropertiesClick =()=>{
+    if(isLoggedIn){
+      window.location.href="/properties"
+    }else{
+      // showModal(true)
+    }
   }
-
+  // const shouldShowNavBar = !window.location.pathname.includes('properties');
   return (
-    <header>
+  <header>
       <nav className="nav">
         <h1>RealEstate</h1>
         <div className="link">
-          <a href="#home">Home</a>
+          <a href="/landingPage">Home</a>
           <a href="#about">About</a>
           <a href="#services">Services</a>
-          <a href="#properties">Properties</a>
+          <a href="#properties" onClick={handelPropertiesClick}>Properties</a>
           <a href="#contact">Contact</a>
+          {user?.role === "admin" && (
+           <a href="/check-users" className="admin-link">
+        Check Users
+      </a>
+    )}
           {isLoggedIn ? (
             <div className="logged-in">
               <span className="username_display">Welcome, {user?.fullName || "User"}!</span>
+    
               <Button variant="contained" color="secondary" onClick={handleLogout}>
                 Logout
               </Button>
@@ -175,7 +188,6 @@ const NavBar = () => {
         <Alert
           severity={alert.type}
           onClose={() => {setAlert({ type: "", message: "" })
-          console.log(alert);
           
         }}
           style={{ margin: "10px 0" }}
@@ -185,7 +197,6 @@ const NavBar = () => {
       )}
       
       {showModal && (
-        
         <div className="modal-overlay" onClick={handelModelClose}>
           <div className="modal" style={{position:"relative"}} onClick={(e) => e.stopPropagation()}>
           <CloseIcon

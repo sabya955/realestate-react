@@ -9,9 +9,12 @@ body {
     font-family: 'Arial', sans-serif;
 }
 .main{
+    margin-top: 30px;
+    padding-bottom: 50px;
     width: 100%;
     display: grid;
-    grid-template-rows: 20% 1fr;
+    grid-template-rows: 20% 1fr 30px;
+    gap: 10px;
 }
 .head{
     display: grid;
@@ -35,6 +38,22 @@ body {
     align-content: center;
     gap: 20px;
     cursor: pointer;
+    
+}
+.view-all-btn{
+    height: 40px;
+    width: 300px;
+    margin-left: 40px;
+    border: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: #6c63ff;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
 }
 @media screen and (max-width: 1024px) {
     .head h1 {
@@ -50,6 +69,7 @@ body {
         gap: 15px;
     }
 }
+
 
 @media screen and (max-width: 768px) {
     .main {
