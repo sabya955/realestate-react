@@ -5,7 +5,6 @@ const {verifyAdmin} = require('./util');
 router.get("/users",verifyAdmin, async(req,res)=>{
     try{
         const result = await productPool.query('SELECT id, full_name AS fullName,email,role FROM  users')
-        console.log(result);
         return res.status(200).json({users:result.rows});
     }catch(err){
         console.log(err);

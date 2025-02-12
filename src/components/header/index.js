@@ -3,9 +3,15 @@ import { useNavigate } from "react-router-dom";
 import "./index.css";
 import { Alert,TextField,Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
+import DensityMediumIcon from "@mui/icons-material/DensityMedium";
+import PersonIcon from '@mui/icons-material/Person';
 import { apis } from "../../comonapi";
+import { useSelector,useDispatch } from "react-redux";
+import {login,logout} from './authAction'
 
 const NavBar = () => {
+  const dispatch = useDispatch()
+  const {isLoggedIn,user} =useSelector((state)=>state.auth)
   const [alert, setAlert] = useState({type:"", message:""});
   const [error, setErrors] = useState({});
   const [showMenu, setShowMenu] = useState(false);
@@ -17,17 +23,10 @@ const NavBar = () => {
     password: "",
     confirmPassword: "",
   });
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [user, setUser] = useState(null)
-  // const Navigate = useNavigate();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // const [user, setUser] = useState(null)
+  const Navigate = useNavigate();
   useEffect(()=>{
-    const token = localStorage.getItem('token')
-   if(token){
-    setIsLoggedIn(true)
-    const storeUser = JSON.parse(localStorage.getItem('user'))
-    console.log("Store user: ", storeUser);
-    setUser(storeUser)
-   }
    setAlert({type:"",message:""})
   },[])
   const handleInputChange = (e) => {
@@ -90,10 +89,8 @@ const NavBar = () => {
       .then((data) => {
         setAlert({ type: "success", message: data.message });
         if (!isSignup && data.token) {
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user",JSON.stringify(data.user));
-          setIsLoggedIn(true);
-          setUser(data.user);
+          dispatch(login(data.user));
+          localStorage.setItem("token",data.token)
           setTimeout(()=>{
           window.location.reload();
           },2000)
@@ -105,12 +102,9 @@ const NavBar = () => {
       });
   };
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setIsLoggedIn(false);
-    setUser(null);
+   dispatch(logout())
     setAlert({type:"info", message:"you have been logged out"})
-    // Navigate("/landingPage",{replace:true})
+    Navigate("/landingPage",{replace:true})
     setTimeout(()=>{
       window.location.reload();
     },2000)
@@ -143,7 +137,7 @@ const NavBar = () => {
     )}
           {isLoggedIn ? (
             <div className="logged-in">
-              <span className="username_display">Welcome, {user?.fullName || "User"}!</span>
+              <span className="username_display"><PersonIcon className="icon" /> {user?.fullName || "User"}!</span>
     
               <Button variant="contained" color="secondary" onClick={handleLogout}>
                 Logout
@@ -161,7 +155,7 @@ const NavBar = () => {
           )}
         </div>
         <div className="logo">
-          <button onClick={() => setShowMenu(!showMenu)}>...</button>
+        <DensityMediumIcon onClick={() => setShowMenu(!showMenu)} style={{ fontSize: 40, color: "blue" }} />
         </div>
         {showMenu && (
           <div className="dropDown">

@@ -24,7 +24,7 @@ const verifyAdmin = async (req, res, next) => {
 };
 
 const verifyToken = (req, res, next) => {
-  console.log(JWT_SECRET);
+
 
   const authHeader = req.headers["authorization"];
   if (!authHeader) {

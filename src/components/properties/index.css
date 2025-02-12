@@ -7,6 +7,8 @@
 body {
     margin: 0;
     font-family: 'Arial', sans-serif;
+  background-color: rgb(228, 225, 225);
+
 }
 .main{
     margin-top: 30px;
@@ -15,7 +17,7 @@ body {
     display: grid;
     grid-template-rows: 20% 1fr 30px;
     gap: 10px;
-}
+}   
 .head{
     display: grid;
     justify-content: center;
@@ -38,6 +40,7 @@ body {
     align-content: center;
     gap: 20px;
     cursor: pointer;
+    grid-template-rows: 1fr;
     
 }
 .view-all-btn{
