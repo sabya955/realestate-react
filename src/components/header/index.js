@@ -1,5 +1,5 @@
 import React, { useState ,useEffect} from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import "./index.css";
 import { Alert,TextField,Button } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
@@ -11,6 +11,8 @@ import {login,logout} from './authAction'
 
 const NavBar = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
+  const isActive = (path)=>location.pathname === path
   const {isLoggedIn,user} =useSelector((state)=>state.auth)
   const [alert, setAlert] = useState({type:"", message:""});
   const [error, setErrors] = useState({});
@@ -73,9 +75,7 @@ const NavBar = () => {
   const handelSubmit = async (e) => {
     e.preventDefault();
     const isInvalid = validateForm();
-    console.log("is invalid", isInvalid);
     if (isInvalid) {
-      console.log("Is invalid: ", error);
       return;
     }
 
@@ -125,13 +125,13 @@ const NavBar = () => {
       <nav className="nav">
         <h1>RealEstate</h1>
         <div className="link">
-          <a href="/landingPage">Home</a>
+          <a href="/landingPage" className={isActive("/landingPage") ? "active" : ""}>Home</a>
           <a href="#about">About</a>
           <a href="#services">Services</a>
-          <a href="#properties" onClick={handelPropertiesClick}>Properties</a>
+          <a href="#properties" onClick={handelPropertiesClick} className={isActive("/properties")?"active":""}>Properties</a>
           <a href="#contact">Contact</a>
           {user?.role === "admin" && (
-           <a href="/check-users" className="admin-link">
+           <a href="/check-users" className={isActive("/check-users") ? "active" : ""}>
         Check Users
       </a>
     )}

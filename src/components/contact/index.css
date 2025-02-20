@@ -34,3 +34,39 @@
     border-radius: 10px;
             
         }
+        @media (max-width: 768px) {
+            .container3 {
+                grid-template-columns: 100%;
+                padding: 15px;
+            }
+            
+            .container3 h1, .container3 h2 {
+                font-size: 6vw; /* Adjust text size for smaller screens */
+            }
+            
+            .container3 p {
+                font-size: 3vw;
+            }
+            
+            .container3 button {
+                width: 90%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container3 {
+                padding: 10px;
+            }
+        
+            .container3 h1, .container3 h2 {
+                font-size: 7vw;
+            }
+        
+            .container3 p {
+                font-size: 4vw;
+            }
+        
+            .container3 button {
+                width: 100%;
+            }
+        }

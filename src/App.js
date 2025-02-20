@@ -5,7 +5,6 @@ import Properties from "./components/properties";
 import  Check  from "./components/check-users";
 import Navbar from "./components/header"
 import "./App.css";
-
 function App() {
   return (
     <>

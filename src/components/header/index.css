@@ -41,12 +41,33 @@ header {
     text-decoration: none;
     color: rgb(79, 79, 208);
     font-size: 16px;
+    position: relative;
     transition: color 0.3s ease;
 }
 
-.link a:hover {
-    color: #0056b3;
+.link a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: rgb(79, 79, 208);
+    transition: width 0.7s ease-in-out;
 }
+
+.link a:hover {
+    color: rgb(45, 45, 150);
+    
+}
+
+.link a:hover::after {
+    width: 100%;
+}
+.link a.active::after {
+    width: 100%;
+}
+
 
 .signup-loginBtn {
     padding: 5px;
@@ -63,7 +84,6 @@ header {
     background-color: #5846d6;
 }
 
-/* Dropdown Menu */
 .logo {
     width: 40px;
     height: 40px;
@@ -110,7 +130,7 @@ header {
     
 }
 
-/* Modal Styles */
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -222,7 +242,6 @@ header {
     height: 30px;
     width: 80px;
 }
-/* Responsiveness */
 @media (max-width: 768px) {
     header {
         height: 60px;
