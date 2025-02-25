@@ -13,3 +13,11 @@ export const updatePropertyState = ((property)=>{
       payload:property
     }
 })
+export const toggleLike  = (productId)=>({
+  type:"TOGGLE_LIKE",
+  payload:productId,
+})
+export const setLikeProperties = (productId)=>({
+  type:"SET_LIKE_PROPERTIES",
+  payload:productId,
+})

@@ -1,11 +1,11 @@
 const initialState = {
   properties: [],
-  selectProduct: null,
+  likedProperties: [],
+
 };
 const propertiesReducer = (state = initialState, action) => {
   switch (action.type) {
     case "SET_PROPERTIES":
-      console.log("inside properties", action);
       return { ...state, properties: action.payload };
     case "ADD_PROPERTIES":
       return { ...state, properties: [...state.properties, action.payload] };
@@ -17,10 +17,18 @@ const propertiesReducer = (state = initialState, action) => {
           prop.id === action.payload.id ? action.payload : prop
         ),
       };
-    case "SET_SELECT_PRODUCT":
-      return { ...state, selectProduct: action.payload };
-    case "CLEAR_SELECT_PRODUCT":
-      return { ...state, selectProduct: null };
+      case "TOGGLE_LIKE":
+        return{
+          ...state,
+          likedProperties:state.likedProperties.includes(action.payload)
+          ? state.likedProperties.filter((id)=>id!==action.payload)
+          :[...state.likedProperties,action.payload],
+        }
+        case "SET_LIKE_PROPERTIES":
+          return {
+            ...state,
+            likedProperties:action.payload,
+          }
     default:
       return state;
   }

@@ -12,9 +12,7 @@ router.get("/", verifyToken, async (req, res) => {
     const result = await productPool.query(query);
     return res.json({ products: result.rows });
   } catch (err) {
-    return res.status(500
-      
-    ).json({ message: "Error fetching products" });
+    return res.status(500).json({ message: "Error fetching products" });
   }
 });
 router.get("/:id", verifyToken, async (req, res) => {

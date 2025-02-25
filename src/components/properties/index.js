@@ -8,6 +8,8 @@ import {
   setProperties,
   updatePropertyState,
   addProperty,
+  toggleLike,
+  setLikeProperties
 } from "./propertiesAction";
 import {
   Dialog,
@@ -23,17 +25,25 @@ import {
   InputLabel,
 } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 const Properties = () => {
   const dispatch = useDispatch();
-  const { properties = [] } = useSelector(
+  const { properties = [],likedProperties=[]} = useSelector(
     (state) => state.properties
   );
-
+  console.log("like properties",likedProperties);
+  
+  // const {likedProperties = []}=useSelector((state)=>{
+  //   console.log("state is",state);
+  //   return state.likedProperties
+  // })
+  
   const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
   const isAdmin = user?.role === "admin";
   const isPropertiesPage = window.location.pathname === "/properties";
-  const [selectProduct,setSelectedProduct] = useState(null)
+  const [selectProduct, setSelectedProduct] = useState(null);
   const [openAddDialog, setOpenAddDialog] = useState(false);
 
   const [newProperty, setNewProperty] = useState({
@@ -45,38 +55,51 @@ const Properties = () => {
     availability: "",
     state: "",
   });
-
   useEffect(() => {
     apis
       .get("api/products")
       .then((response) => {
+        console.log(response);
         dispatch(setProperties(response.products || []));
       })
       .catch((error) => console.log("Fetch products failed", error));
-  }, [dispatch]);
-
-
-
+    if (userId) {
+      console.log("user id is", userId);
+      apis
+        .get("api/like")
+        .then((response) => {
+          console.log("response is", response);
+          dispatch(setLikeProperties(response.likes || []));
+        })
+        .catch((error) => console.log("Failed to fetch likes", error));
+    }
+  }, [dispatch, userId]);
+  const handelLike = (productId) => {
+    console.log(productId);
+    apis
+      .post("api/like", { product_id: productId })
+      .then((response) => {
+        console.log("response is in post", response);
+        dispatch(toggleLike(productId));
+      })
+      .catch((error) => console.log("Failed to like product", error));
+  };
   const handleOpenModel = (product) => {
     setSelectedProduct(product);
   };
 
   const handleCloseModel = () => {
-  setSelectedProduct(null)
+    setSelectedProduct(null);
   };
-
   const handleOpenDialog = () => {
     setOpenAddDialog(true);
   };
-
   const handleCloseDialog = () => {
     setOpenAddDialog(false);
   };
-
   const handleChange = (e) => {
     setNewProperty({ ...newProperty, [e.target.name]: e.target.value });
   };
-
   const handleAddProperty = () => {
     if (
       !newProperty.name ||
@@ -94,7 +117,6 @@ const Properties = () => {
       .then((response) => {
         dispatch(addProperty(response.data));
         setOpenAddDialog(false);
-
         setNewProperty({
           name: "",
           price: "",
@@ -107,7 +129,6 @@ const Properties = () => {
       })
       .catch((error) => console.log("Failed to add property", error));
   };
-
   const handleUpdateState = () => {
     if (!selectProduct) return;
     apis
@@ -116,18 +137,18 @@ const Properties = () => {
         state: selectProduct.state,
       })
       .then((response) => {
-        console.log("what is getting",response)
+        console.log("what is getting", response);
         dispatch(updatePropertyState(response.product));
         handleCloseModel();
       })
       .catch((error) => console.log("Failed to update state", error));
   };
-
   const isHomePage =
     window.location.pathname === "/" ||
     window.location.pathname === "/home" ||
     window.location.pathname === "/landingPage";
-
+    console.log("properties", properties);
+    
   return (
     <>
       <NavBar />
@@ -141,11 +162,36 @@ const Properties = () => {
           {properties
             .filter((product) => product.state !== "deprecated" || isAdmin)
             .slice(0, isHomePage ? 4 : properties.length)
-            .map((product) => (
-              <div key={product.id} onClick={() => handleOpenModel(product)}>
+            .map((product) => {
+              return(
+              <div
+                key={product.id}
+                onClick={() => handleOpenModel(product)}
+                style={{ position: "relative" }}
+              >
                 <Card {...product} />
+                <IconButton
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handelLike(product.id);
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: "52%",
+                    left: "80%",
+                    backgroundColor: "rgba(255, 255, 255, 0.7)",
+                    borderRadius: "50%",
+                  }}
+                >
+                  {likedProperties.includes(product.id) ? (
+                    <FavoriteIcon  color="error" key={product.id} />
+                  ) : (
+                    <FavoriteBorderIcon  />
+                  )}
+                </IconButton>
               </div>
-            ))}
+            )
+          })}
         </div>
 
         {isAdmin && isPropertiesPage && (
@@ -184,7 +230,12 @@ const Properties = () => {
                   <InputLabel>State</InputLabel>
                   <Select
                     value={selectProduct?.state || ""}
-                    onChange={(e) => setSelectedProduct({...selectProduct,state:e.target.value})}
+                    onChange={(e) =>
+                      setSelectedProduct({
+                        ...selectProduct,
+                        state: e.target.value,
+                      })
+                    }
                     style={{ minWidth: "150px" }}
                   >
                     <MenuItem value="default">Default</MenuItem>

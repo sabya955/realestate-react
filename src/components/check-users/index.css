@@ -39,3 +39,35 @@ body{
   .MuiButton-containedPrimary:hover {
     background-color: #1565c0;
   }
+  @media (max-width: 599px) {
+    .check_main {
+      margin: 10px;
+      padding: 10px;
+    }
+  
+    .MuiTableHead-root .MuiTableCell-root {
+      font-size: 14px;
+    }
+  }
+  
+  @media (min-width: 600px) and (max-width: 899px) {
+    .check_main {
+      margin: 15px;
+      padding: 15px;
+    }
+  
+    .MuiTableHead-root .MuiTableCell-root {
+      font-size: 16px;
+    }
+  }
+  
+  @media (min-width: 900px) {
+    .check_main {
+      margin: 20px auto;
+      padding: 20px;
+    }
+  
+    .MuiTableHead-root .MuiTableCell-root {
+      font-size: 17px;
+    }
+  }
