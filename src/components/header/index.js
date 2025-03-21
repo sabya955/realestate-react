@@ -8,7 +8,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import { apis } from "../../comonapi";
 import { useSelector,useDispatch } from "react-redux";
 import {login,logout} from './authAction'
-
 const NavBar = () => {
   const dispatch = useDispatch()
   const location = useLocation()
@@ -114,7 +113,7 @@ const NavBar = () => {
   } 
   const handelPropertiesClick =()=>{
     if(isLoggedIn){
-      window.location.href="/properties"
+      Navigate("/properties")
     }else{
       // showModal(true)
     }
@@ -167,7 +166,7 @@ const NavBar = () => {
             
             <Button
               variant="contained"
-              color="primery"
+              color="primary"
               className="signup-loginBtn"
               onClick={() => setShowModal(true)}
             >
@@ -213,7 +212,6 @@ const NavBar = () => {
             <h2>{isSignup ? "Signup" : "Login"}</h2>
             {isSignup ? (
                <form onSubmit={handelSubmit}>
-                
                <TextField
                type="text"
                  label="Full Name"
@@ -222,7 +220,7 @@ const NavBar = () => {
                  name="fullName"
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  error={! ! error.fullName}
+                  error={!! error.fullName}
                   helperText={error.fullName}
                  />
                   <TextField
@@ -233,7 +231,7 @@ const NavBar = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  error={! ! error.email}
+                  error={!! error.email}
                   helperText={error.email}
                   />
                   <TextField 
@@ -244,7 +242,7 @@ const NavBar = () => {
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  error={! ! error.password}
+                  error={!! error.password}
                   helperText={error.password}
                   />
                   <TextField
@@ -255,7 +253,7 @@ const NavBar = () => {
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  error={! ! error.confirmPassword}
+                  error={!! error.confirmPassword}
                   helperText={error.confirmPassword}
                   />
                <Button type="submit"
@@ -275,7 +273,7 @@ const NavBar = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                error={! ! error.email}
+                error={!! error.email}
                 helperText={error.email}
                 />
                 <TextField 
@@ -286,7 +284,7 @@ const NavBar = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                error={! ! error.password}
+                error={!! error.password}
                 helperText={error.password}                
                 />
                 <Button type="submit"
@@ -302,7 +300,7 @@ const NavBar = () => {
               {isSignup ? "Already have an account?" : "Don't have an account?"}
               <Button
                 type="button"
-                variant="primery"
+                variant="primary"
                 className="switchBtn"
                 onClick={() => {
                   setIsSignup(!isSignup); 

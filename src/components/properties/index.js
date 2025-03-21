@@ -157,7 +157,6 @@ const Properties = () => {
           <p>Featured Listings</p>
           <h1>Find Your Perfect Home</h1>
         </div>
-
         <div className="properties">
           {properties
             .filter((product) => product.state !== "deprecated" || isAdmin)

@@ -1,7 +1,6 @@
 const initialState = {
   properties: [],
   likedProperties: [],
-
 };
 const propertiesReducer = (state = initialState, action) => {
   switch (action.type) {

@@ -7,7 +7,6 @@ export const addProperty =(property)=>({
   payload:property,
 })
 export const updatePropertyState = ((property)=>{
-  console.log("property is",property);
   return {
       type:"UPDATE_STATE_PROPERTY",
       payload:property

@@ -1,5 +1,5 @@
 const initialState = {
-    user:[],
+    users:[],
     message:[],
 }
 const userReducer = (state = initialState,action)=>{
@@ -7,10 +7,9 @@ const userReducer = (state = initialState,action)=>{
         case "SET_USERS":
             return {...state,users:action.payload};
             case "ADD_MESSAGE":
-                return { ...state, messages: [...state.messages, action.payload] };
+                return { ...state, message: [...state.message, action.payload] };
                 default:
                     return state
     }
-    
 }
 export default userReducer
